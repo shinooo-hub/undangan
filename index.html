@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Walimatul 'Ursy | Rian & Anita - The Wedding Celebration</title>
+  <meta name="description" content="Undangan Pernikahan Rian Pratama & Anita Permata. Bersama mengikat janji suci cinta dalam ikatan pernikahan yang penuh berkah.">
+  <meta name="theme-color" content="#f7a8b8">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="The Wedding of Rian & Anita">
+  <meta property="og:description" content="Kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam hari bahagia pernikahan kami.">
+  <meta property="og:image" content="assets/images/couple.jpg">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💍</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital@0;1&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ==========================================================
+       CANVAS FOR FALLING PETALS ANIMATION
+       ========================================================== -->
+  <canvas id="petals-canvas"></canvas>
+
+  <!-- ==========================================================
+       BACKGROUND AUDIO ELEMENT
+       ========================================================== -->
+  <audio id="wedding-audio" src="lagu.mp3" preload="auto" loop></audio>
+
+  <!-- ==========================================================
+       FLOATING CONTROLS (MUSIC & PETALS)
+       ========================================================== -->
+  <button id="music-toggle" class="floating-music-btn" title="Putar / Jeda Musik" aria-label="Music Toggle">
+    <i class="fas fa-play"></i>
+  </button>
+
+  <button id="petals-toggle" class="floating-petals-btn" title="Nyalakan / Matikan Efek Bunga" aria-label="Petals Toggle">
+    <i class="fas fa-seedling"></i>
+  </button>
+
+  <!-- ==========================================================
+       COVER / WELCOME OVERLAY ("BUKA UNDANGAN")
+       ========================================================== -->
+  <div id="cover-overlay" class="cover-overlay">
+    <div class="cover-content">
+      <span class="cover-badge">WALIMATUL 'URSY</span>
+      <h1 class="cover-title">Rian &amp; Anita</h1>
+      <p class="cover-date">Sabtu, 12 Desember 2026</p>
+
+      <div class="cover-guest-box">
+        <p>Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+        <div id="cover-guest-name" class="cover-guest-name">Tamu Undangan &amp; Keluarga</div>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 22px;">
+        Tanpa mengurangi rasa hormat, kami mengundang Anda untuk merayakan hari bahagia kami.
+      </p>
+
+      <button id="btn-open" class="btn-open-invitation">
+        <i class="fas fa-envelope-open-text"></i> Buka Undangan
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================
+       HERO / BERANDA SECTION
+       ========================================================== -->
+  <section id="home" class="hero-section">
+    <div class="container">
+      <div class="glass-card hero-card reveal-on-scroll">
+        <span class="hero-subtitle">THE WEDDING CELEBRATION</span>
+        <h1 class="hero-names">Rian &amp; Anita</h1>
+        <div class="ornament-divider">
+          <span></span>
+          <i class="fas fa-heart"></i>
+          <span></span>
+        </div>
+        <span class="hero-date-badge">12 . 12 . 2026</span>
+
+        <img src="assets/images/couple.jpg" alt="Rian & Anita Couple Portrait" class="hero-banner-img">
+
+        <!-- Countdown Hari Pernikahan -->
+        <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--deep-rose); margin-bottom: 8px;">
+          Menghitung Hari Menuju Hari Bahagia
+        </h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">
+          Insya Allah akad nikah &amp; resepsi akan dilaksanakan dalam:
+        </p>
+
+        <div class="countdown-container">
+          <div class="timer-box">
+            <span id="days" class="timer-num">00</span>
+            <span class="timer-label">Hari</span>
+          </div>
+          <div class="timer-box">
+            <span id="hours" class="timer-num">00</span>
+            <span class="timer-label">Jam</span>
+          </div>
+          <div class="timer-box">
+            <span id="minutes" class="timer-num">00</span>
+            <span class="timer-label">Menit</span>
+          </div>
+          <div class="timer-box">
+            <span id="seconds" class="timer-num">00</span>
+            <span class="timer-label">Detik</span>
+          </div>
+        </div>
+
+        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Pernikahan+Rian+%26+Anita&dates=20261212T010000Z/20261212T080000Z&details=Walimatul+'Ursy+Pernikahan+Rian+Pratama+%26+Anita+Permata&location=Grand+Ballroom+Hotel+Mulia,+Jakarta" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="btn-calendar">
+          <i class="fas fa-calendar-plus"></i> Simpan ke Google Calendar
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       SURAH / QUOTE SECTION
+       ========================================================== -->
+  <section class="section-wrapper" style="padding-top: 10px;">
+    <div class="container">
+      <div class="glass-card quote-card reveal-on-scroll">
+        <div class="quote-arabic">
+          وَمِنْ اٰيٰتِهٖٓ اَنْ خَلَقَ لَكُمْ مِّنْ اَنْفُسِكُمْ اَزْوَاجًا لِّتَسْكُنُوْٓا اِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَّوَدَّةً وَّرَحْمَةً ۗاِنَّ فِيْ ذٰلِكَ لَاٰيٰتٍ لِّقَوْمٍ يَّتَفَكَّرُوْنَ
+        </div>
+        <p class="quote-meaning">
+          "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda bagi kaum yang berpikir."
+        </p>
+        <span class="quote-source">— QS. Ar-Rum: 21 —</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       ABOUT PENGANTIN (THE BRIDE & GROOM)
+       ========================================================== -->
+  <section id="pengantin" class="section-wrapper">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="sub-title">MEMPELAI PENGANTIN</span>
+        <h2 class="main-title">Mempelai Berbahagia</h2>
+        <div class="ornament-divider">
+          <span></span>
+          <i class="fas fa-ring"></i>
+          <span></span>
+        </div>
+        <p class="section-desc">
+          Dengan memohon rahmat dan ridho Allah Subhanahu Wa Ta'ala, kami bermaksud menyelenggarakan syukuran pernikahan kami:
+        </p>
+      </div>
+
+      <div class="couple-grid">
+        <!-- Groom Card -->
+        <div class="glass-card couple-card reveal-on-scroll">
+          <div class="couple-avatar-wrapper">
+            <div class="couple-avatar-frame"></div>
+            <img src="assets/images/groom.jpg" alt="Mempelai Pria - Rian Pratama" class="couple-avatar">
+          </div>
+          <h3 class="couple-name">Rian Pratama, S.Kom.</h3>
+          <span class="couple-nickname">Rian</span>
+          <p class="couple-parents">
+            Putra pertama dari pasangan<br>
+            <strong>Bpk. Bambang Wijaya</strong><br>
+            &amp; <strong>Ibu Siti Aminah</strong>
+          </p>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn">
+            <i class="fab fa-instagram"></i> @rianpratama
+          </a>
+        </div>
+
+        <!-- Separator -->
+        <div class="couple-separator reveal-on-scroll">
+          <div class="ampersand-circle">&amp;</div>
+        </div>
+
+        <!-- Bride Card -->
+        <div class="glass-card couple-card reveal-on-scroll">
+          <div class="couple-avatar-wrapper">
+            <div class="couple-avatar-frame"></div>
+            <img src="assets/images/bride.jpg" alt="Mempelai Wanita - Anita Permata" class="couple-avatar">
+          </div>
+          <h3 class="couple-name">Anita Permata, S.Farm.</h3>
+          <span class="couple-nickname">Anita</span>
+          <p class="couple-parents">
+            Putri kedua dari pasangan<br>
+            <strong>Bpk. H. Hendra Saputra</strong><br>
+            &amp; <strong>Ibu Hj. Ratna Dewi</strong>
+          </p>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn">
+            <i class="fab fa-instagram"></i> @anitapermata
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       ACARA PERNIKAHAN (EVENTS & VENUE)
+       ========================================================== -->
+  <section id="acara" class="section-wrapper">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="sub-title">WAKTU &amp; TEMPAT</span>
+        <h2 class="main-title">Agenda Acara</h2>
+        <div class="ornament-divider">
+          <span></span>
+          <i class="far fa-calendar-alt"></i>
+          <span></span>
+        </div>
+        <p class="section-desc">
+          Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu.
+        </p>
+      </div>
+
+      <div class="event-grid">
+        <!-- Akad Nikah -->
+        <div class="glass-card event-card reveal-on-scroll">
+          <div>
+            <div class="event-icon-box">
+              <i class="fas fa-handshake"></i>
+            </div>
+            <h3 class="event-title">Akad Nikah</h3>
+            <div class="event-date-box">
+              <h4>Sabtu, 12 Desember 2026</h4>
+              <p><i class="far fa-clock"></i> Pukul 08.00 - 10.00 WIB</p>
+            </div>
+            <p class="event-location">
+              <strong>Masjid Agung Al-Falah</strong><br>
+              Jl. Raya Boulevard Barat No. 88, Menteng, Jakarta Pusat
+            </p>
+          </div>
+          <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn-map">
+            <i class="fas fa-map-marker-alt"></i> Petunjuk Arah Lokasi
+          </a>
+        </div>
+
+        <!-- Resepsi Pernikahan -->
+        <div class="glass-card event-card reveal-on-scroll">
+          <div>
+            <div class="event-icon-box">
+              <i class="fas fa-champagne-glasses"></i>
+            </div>
+            <h3 class="event-title">Resepsi Pernikahan</h3>
+            <div class="event-date-box">
+              <h4>Sabtu, 12 Desember 2026</h4>
+              <p><i class="far fa-clock"></i> Pukul 11.00 - 15.00 WIB</p>
+            </div>
+            <p class="event-location">
+              <strong>Grand Ballroom Hotel Mulia</strong><br>
+              Jl. Asia Afrika No. 1, Senayan, Jakarta Pusat
+            </p>
+          </div>
+          <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer" class="btn-map">
+            <i class="fas fa-map-marker-alt"></i> Petunjuk Arah Lokasi
+          </a>
+        </div>
+      </div>
+
+      <!-- Google Maps Embed -->
+      <div class="map-wrapper reveal-on-scroll">
+        <iframe 
+          title="Lokasi Pernikahan"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.3129486244795!2d106.79727457499037!3d-6.222399293765666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f14eb31d6ea5%3A0x6b645dfb152d5b6!2sHotel%20Mulia%20Senayan%20Jakarta!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       LOVE STORY TIMELINE (BONUS)
+       ========================================================== -->
+  <section id="cerita" class="section-wrapper">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="sub-title">KISAH KASIH</span>
+        <h2 class="main-title">Cerita Cinta Kami</h2>
+        <div class="ornament-divider">
+          <span></span>
+          <i class="fas fa-feather-pointed"></i>
+          <span></span>
+        </div>
+        <p class="section-desc">
+          Sebuah perjalanan cinta yang dirajut dengan kesabaran, keyakinan, dan doa hingga melangkah ke pelaminan.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item left reveal-on-scroll">
+          <div class="timeline-badge"><i class="fas fa-coffee"></i></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2021</div>
+            <div class="timeline-title">Pertemuan Pertama</div>
+            <p class="timeline-text">
+              Berawal dari sebuah forum kegiatan kampus di Jakarta. Percakapan santai tentang buku dan cita-cita menjadi titik awal perkenalan kami.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item right reveal-on-scroll">
+          <div class="timeline-badge"><i class="fas fa-heart"></i></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2023</div>
+            <div class="timeline-title">Menjalin Komitmen</div>
+            <p class="timeline-text">
+              Dua hati menyadari kesamaan visi dan komitmen untuk saling mendukung dan berproses bersama menjadi pribadi yang lebih baik.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item left reveal-on-scroll">
+          <div class="timeline-badge"><i class="fas fa-gem"></i></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2025</div>
+            <div class="timeline-title">Hari Pertunangan</div>
+            <p class="timeline-text">
+              Didampingi kedua keluarga tercinta, kami melangsungkan prosesi lamaran sebagai tanda keseriusan menuju jenjang pernikahan yang suci.
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item right reveal-on-scroll">
+          <div class="timeline-badge"><i class="fas fa-dove"></i></div>
+          <div class="timeline-content">
+            <div class="timeline-year">2026</div>
+            <div class="timeline-title">Menuju Babak Baru</div>
+            <p class="timeline-text">
+              Dengan penuh syukur, kami siap mengikrarkan akad suci pernikahan untuk melangkah bersama sebagai sepasang suami dan istri.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       BUKU TAMU & RSVP (GUESTBOOK)
+       ========================================================== -->
+  <section id="bukutamu" class="section-wrapper">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="sub-title">DOA &amp; UCAPAN</span>
+        <h2 class="main-title">Buku Tamu</h2>
+        <div class="ornament-divider">
+          <span></span>
+          <i class="fas fa-book-open"></i>
+          <span></span>
+        </div>
+        <p class="section-desc">
+          Tinggalkan doa restu dan konfirmasi kehadiran Anda untuk hari bahagia pernikahan kami.
+        </p>
+      </div>
+
+      <div class="guestbook-layout">
+        <!-- RSVP & Wish Form -->
+        <div class="glass-card guestbook-form-card reveal-on-scroll">
+          <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--deep-rose); margin-bottom: 20px;">
+            Kirim Doa Restu &amp; RSVP
+          </h3>
+
+          <form id="guestbook-form">
+            <div class="form-group">
+              <label for="guest-name" class="form-label">Nama Lengkap</label>
+              <input type="text" id="guest-name" class="form-input" placeholder="Masukkan nama Anda..." required>
+            </div>
+
+            <div class="form-group">
+              <label for="guest-attendance" class="form-label">Konfirmasi Kehadiran</label>
+              <select id="guest-attendance" class="form-select">
+                <option value="hadir">🌸 Ya, Saya Akan Hadir</option>
+                <option value="ragu">🤔 Masih Ragu-ragu</option>
+                <option value="tidak">🙏 Maaf, Berhalangan Hadir</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="guest-message" class="form-label">Pesan &amp; Doa Restu</label>
+              <textarea id="guest-message" class="form-textarea" placeholder="Tuliskan ucapan dan doa terbaik Anda di sini..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit">
+              <i class="fas fa-paper-plane"></i> Kirim Doa &amp; Ucapan
+            </button>
+          </form>
+        </div>
+
+        <!-- Realtime Guestbook Wishes Feed -->
+        <div class="glass-card guestbook-feed-card reveal-on-scroll">
+          <div class="feed-header">
+            <h3 class="feed-title">Daftar Ucapan &amp; Doa</h3>
+            <span id="wishes-count" class="feed-count-badge">0 Doa &amp; Ucapan</span>
+          </div>
+          
+          <div id="guestbook-list" class="feed-list">
+            <!-- Wishes will be populated dynamically from localStorage -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       AMPLOP DIGITAL / WEDDING GIFT (BONUS)
+       ========================================================== -->
+  <section class="section-wrapper" style="padding-top: 10px;">
+    <div class="container">
+      <div class="section-header reveal-on-scroll">
+        <span class="sub-title">TANDA KASIH</span>
+        <h2 class="main-title">Kado Digital</h2>
+        <div class="ornament-divider">
+          <span></span>
+          <i class="fas fa-gift"></i>
+          <span></span>
+        </div>
+        <p class="section-desc">
+          Doa restu Anda merupakan karunia terindah bagi kami. Namun jika Anda bermaksud memberikan tanda kasih, Anda dapat mengirimkannya melalui:
+        </p>
+      </div>
+
+      <div class="gift-grid">
+        <!-- BCA Card -->
+        <div class="gift-card reveal-on-scroll">
+          <div class="gift-bank-logo">BCA</div>
+          <div class="gift-account-number" id="acc-bca">5829103842</div>
+          <div class="gift-holder">a.n. Rian Pratama</div>
+          <button class="btn-copy" data-account="5829103842" data-bank="BCA">
+            <i class="far fa-copy"></i> Salin No. Rekening
+          </button>
+        </div>
+
+        <!-- Mandiri Card -->
+        <div class="gift-card reveal-on-scroll">
+          <div class="gift-bank-logo mandiri">MANDIRI</div>
+          <div class="gift-account-number" id="acc-mandiri">1370019283741</div>
+          <div class="gift-holder">a.n. Anita Permata</div>
+          <button class="btn-copy" data-account="1370019283741" data-bank="Mandiri">
+            <i class="far fa-copy"></i> Salin No. Rekening
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       FOOTER
+       ========================================================== -->
+  <footer class="footer-section">
+    <div class="container">
+      <h2 class="footer-names">Rian &amp; Anita</h2>
+      <p style="color: var(--text-dark); max-width: 580px; margin: 0 auto; line-height: 1.8;">
+        Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu bagi kami berdua.
+      </p>
+      <div class="ornament-divider">
+        <span></span>
+        <i class="fas fa-heart" style="color: var(--deep-rose);"></i>
+        <span></span>
+      </div>
+      <p style="font-family: var(--font-serif); font-size: 1.05rem; color: var(--deep-rose); font-weight: 600;">
+        Wassalamu'alaikum Warahmatullahi Wabarakatuh
+      </p>
+      <div class="footer-credit">
+        &copy; 2026 The Wedding of Rian &amp; Anita. Crafted with love.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================
+       BOTTOM NAVIGATION BAR
+       ========================================================== -->
+  <nav class="bottom-nav">
+    <a href="#home" class="nav-link active">
+      <i class="fas fa-home"></i>
+      <span>Beranda</span>
+    </a>
+    <a href="#pengantin" class="nav-link">
+      <i class="fas fa-user-friends"></i>
+      <span>Pengantin</span>
+    </a>
+    <a href="#acara" class="nav-link">
+      <i class="fas fa-calendar-day"></i>
+      <span>Acara</span>
+    </a>
+    <a href="#cerita" class="nav-link">
+      <i class="fas fa-heart"></i>
+      <span>Cerita</span>
+    </a>
+    <a href="#bukutamu" class="nav-link">
+      <i class="fas fa-envelope-open-text"></i>
+      <span>Buku Tamu</span>
+    </a>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="assets/js/petals.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
